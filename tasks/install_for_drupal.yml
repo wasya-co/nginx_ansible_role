@@ -1,0 +1,33 @@
+---
+- name: install nginx
+  become: true
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+
+- file:
+    path: /opt/tmp
+    state: directory
+- template:
+    src: ./opt/tmp/fullchain.pem
+    dest: /opt/tmp/fullchain.pem
+- template:
+    src: ./opt/tmp/privkey.pem
+    dest: /opt/tmp/privkey.pem
+
+- template:
+    src: etc/nginx/sites-available/default.conf
+    dest: /etc/nginx/sites-available/default
+- file:
+    src: /etc/nginx/sites-available/default
+    dest: /etc/nginx/sites-enabled/default
+    state: link
+  # notify: reload daemon
+  notify: restart nginx
+
+
+- template:
+    src: etc/nginx/conf.d/proxy_headers.conf
+    dest: /etc/nginx/conf.d/proxy_headers.conf
+
+

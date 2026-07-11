@@ -1,15 +1,4 @@
 ---
-- ansible.builtin.file:
-    path: /opt/tmp
-    state: directory
-- ansible.builtin.template:
-    src: opt/tmp/fullchain.pem
-    dest: /opt/tmp/fullchain.pem
-- ansible.builtin.template:
-    src: opt/tmp/privkey.pem
-    dest: /opt/tmp/privkey.pem
-
-
 - name: Check if app-specific nginx template exists
   ansible.builtin.stat:
     path: "{{ role_path }}/templates/etc/nginx/sites-available/proxy-vsite-{{ appliance_slug }}.conf"
